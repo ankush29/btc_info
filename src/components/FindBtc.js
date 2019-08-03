@@ -1,82 +1,84 @@
-import React from "react";
-import { Helmet } from "react-helmet";
-import TextField from "@material-ui/core/TextField";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
+import React from 'react';
+import { Helmet } from 'react-helmet';
+import TextField from '@material-ui/core/TextField';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 
 const classes = {
   root: {
-    width: "100%"
+    width: '100%',
   },
   paper: {
     // marginTop: theme.spacing(3),
-    width: "100%",
-    overflowX: "auto"
+    width: '100%',
+    overflowX: 'auto',
     // marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: 650
-  }
+    minWidth: 650,
+  },
 };
 
 export default class FindBtc extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      btcAmount: "",
-      error: "",
-      outputArray: []
+      btcAmount: '',
+      error: '',
+      outputArray: [],
     };
   }
 
-  _handleBtcValue = ev => {
+  _handleBtcValue = (ev) => {
     this.setState({
       btcAmount: ev.target.value,
-      error: ""
+      error: '',
     });
   };
 
-  _findBtc = ev => {
+  _findBtc = () => {
     const { btcAmount } = this.state;
     const amountRegex = /^[+-]?\d+(\.\d+)?$/.test(btcAmount);
     if (amountRegex) {
       this._getValue(btcAmount);
     } else {
       this.setState({
-        error: "Please Enter Valid Number. eg(12,1.2,0.12)",
-        outputArray: []
+        error: 'Please Enter Valid Number. eg(12,1.2,0.12)',
+        outputArray: [],
       });
     }
   };
 
-  _getValue = btcAmount => {
+  _getValue = (btcAmount) => {
     const { btcArray } = this.props;
-    let outputArray = [];
+    const outputArray = [];
     let newArray = btcArray.slice();
     let count = 0;
     while (count < 3 && newArray.length) {
-      let ouput = newArray.reduce((prev, curr, index) =>
-        Math.abs(curr.amount - btcAmount) < Math.abs(prev.amount - btcAmount)
-          ? curr
-          : prev
-      );
-      newArray = newArray.filter(item => {
+      const ouput = newArray.reduce((prev, curr) => {
+        if (
+          Math.abs(curr.amount - btcAmount) < Math.abs(prev.amount - btcAmount)
+        ) {
+          return curr;
+        }
+        return prev;
+      });
+      newArray = newArray.filter((item) => {
         if (item.id !== ouput.id) {
           return item;
-        } else {
-          return false;
         }
+        return false;
       });
       outputArray.push(ouput);
-      count++;
+      count += 1;
     }
     this.setState({
-      outputArray
+      outputArray,
     });
   };
 
@@ -105,9 +107,6 @@ export default class FindBtc extends React.Component {
           Find BTC
         </Button>
         <p className="error">{error}</p>
-        {outputArray.forEach((item, index) => {
-          return <ul></ul>;
-        })}
         <div style={classes.root}>
           <Paper style={classes.paper}>
             <Table style={classes.table} size="small">

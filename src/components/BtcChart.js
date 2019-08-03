@@ -1,5 +1,5 @@
-import React from "react";
-import { Helmet } from "react-helmet";
+import React from 'react';
+import { Helmet } from 'react-helmet';
 import {
   LineChart,
   Line,
@@ -7,46 +7,45 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
-} from "recharts";
+  Legend,
+} from 'recharts';
 
-export default class BtcChart extends React.Component {
-  render() {
-    const { btcArray } = this.props;
-    return (
-      <div>
-        <Helmet>
-          <title>BTC TRANSACION | BTC GRAPH</title>
-        </Helmet>
-        <h3>BTC CHART</h3>
-        {btcArray.length ? (
-          <LineChart
-            width={1000}
-            height={500}
-            data={btcArray}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="timeStamp" style={{ fontSize: "14px" }} />
-            <YAxis dataKey="amount" style={{ fontSize: "14px" }} />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="amount"
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
-        ) : (
-          "LOADING CHARTS..."
-        )}
-      </div>
-    );
-  }
-}
+const BtcChart = (props) => {
+  const { btcArray } = props;
+  return (
+    <div>
+      <Helmet>
+        <title>BTC TRANSACION | BTC STATUS </title>
+      </Helmet>
+      <h3>BTC CHART</h3>
+      {btcArray.length ? (
+        <LineChart
+          width={1000}
+          height={500}
+          data={btcArray}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="timeStamp" style={{ fontSize: '14px' }} />
+          <YAxis dataKey="amount" style={{ fontSize: '14px' }} />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="amount"
+            stroke="#8884d8"
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
+      ) : (
+        'LOADING CHARTS...'
+      )}
+    </div>
+  );
+};
+export default BtcChart;

@@ -25,104 +25,129 @@ class App extends Component {
     super(props);
     this.state = {
       connectionStatus: 'connecting...',
-      btcArray: []
+      btcArray: [],
     };
   }
 
   componentDidMount = () => {
-    window.addEventListener('online',  this._restart);
+    window.addEventListener('online', this._restart);
     window.addEventListener('offline', this._stop);
 
     websocket = new WebSocket('wss://ws.blockchain.info/inv');
 
     websocket.onopen = () => {
       this.setState({
-        connectionStatus: 'connected'
-      })
-      this._start()
+        connectionStatus: 'connected',
+      });
+      this._start();
     };
 
     websocket.onerror = () => {
       websocket.close();
-      this._stop()
+      this._stop();
     };
 
     websocket.onclose = () => {
-      this._stop()
+      this._stop();
     };
 
     websocket.onmessage = (event) => {
-      let btcData = JSON.parse(event.data)
-      if (btcData.op === 'utx'){
-        this._updateBtcArray(btcData)
+      const btcData = JSON.parse(event.data);
+      if (btcData.op === 'utx') {
+        this._updateBtcArray(btcData);
       }
-    }
-  }
+    };
+  };
 
   _start = () => {
     websocket.send('{"op":"unconfirmed_sub"}');
-  }
+  };
 
   _restart = () => {
     this.setState({
-      connectionStatus: 'connected'
-    })
-  }
+      connectionStatus: 'connected',
+    });
+  };
 
-  _stop = (event) => {
+  _stop = () => {
     this.setState({
-      connectionStatus: 'disconnected'
-    })
-  }
+      connectionStatus: 'disconnected',
+    });
+  };
 
   _updateBtcArray = (btcData) => {
-    const { btcArray } = this.state
-    let btcArrayCopy = [...btcArray]
-    let timeStamp = btcData.x.time;
-    let btcHash = btcData.x.hash;
-    let out = btcData.x.out;
+    const { btcArray } = this.state;
+    const btcArrayCopy = [...btcArray];
+    const timeStamp = btcData.x.time;
+    const btcHash = btcData.x.hash;
+    const outputs = btcData.x.out;
     let btcTotalAmount = 0;
-    for(let i = 0; i < out.length; i++){
-      btcTotalAmount += out[i].value;
+    for (let i = 0; i < outputs.length; i += 1) {
+      btcTotalAmount += outputs[i].value;
     }
     btcTotalAmount /= 100000000;
-    var btcObject = { id: btcHash, amount: btcTotalAmount, timeStamp: this._Unix_timestamp(timeStamp) };
-    if(btcTotalAmount > 1) {
+    const btcObject = {
+      id: btcHash,
+      amount: btcTotalAmount,
+      timeStamp: this._UnixTimestamp(timeStamp),
+    };
+    if (btcTotalAmount > 1) {
       btcArrayCopy.push(btcObject);
     }
     if (btcArrayCopy.length > 10) {
       btcArrayCopy.shift();
     }
-   this.setState({
-     btcArray: [...btcArrayCopy]
-   })
-  }
+    this.setState({
+      btcArray: [...btcArrayCopy],
+    });
+  };
 
-  _Unix_timestamp (t) {
-    let dt = new Date(t*1000);
-    let hr = dt.getHours();
-    let m = "0" + dt.getMinutes();
-    let s = "0" + dt.getSeconds();
-    return hr+ ':' + m.substr(-2) + ':' + s.substr(-2);
+  _UnixTimestamp(t) {
+    const dt = new Date(t * 1000);
+    const hr = dt.getHours();
+    const m = `0${dt.getMinutes()}`;
+    const s = `0${dt.getSeconds()}`;
+    return `${hr}:${m.substr(-2)}:${s.substr(-2)}`;
   }
 
   render() {
-    const { connectionStatus, btcArray } = this.state
+    const { connectionStatus, btcArray } = this.state;
     return (
       <div className="App">
         <div className="App-intro">
           <nav>
-            <NavLink to="/" exact activeClassName="active" activeStyle={{ color: '#1569c7' }} className="NavLink">
+            <NavLink
+              to="/"
+              exact
+              activeClassName="active"
+              activeStyle={{ color: '#1569c7' }}
+              className="NavLink"
+            >
               Home
             </NavLink>
-            <NavLink to="/searchBtc" activeClassName="active" activeStyle={{ color: '#1569c7'}} className="NavLink">
+            <NavLink
+              to="/searchBtc"
+              activeClassName="active"
+              activeStyle={{ color: '#1569c7' }}
+              className="NavLink"
+            >
               FindBtc
             </NavLink>
           </nav>
-          <p>status: {connectionStatus}</p>
+          <p>
+            status:
+            {connectionStatus}
+          </p>
           <Switch>
-            <Route path="/" exact render={(props) => { return <BtcChart {...props} btcArray={btcArray} />}} />
-            <Route path="/searchBtc" render={(props) => { return <FindBtc {...props} btcArray={btcArray} />}} />
+            <Route
+              path="/"
+              exact
+              render={props => <BtcChart {...props} btcArray={btcArray} />}
+            />
+            <Route
+              path="/searchBtc"
+              render={props => <FindBtc {...props} btcArray={btcArray} />}
+            />
           </Switch>
         </div>
       </div>
@@ -133,6 +158,6 @@ class App extends Component {
 export default withRouter(
   connect(
     null,
-    null
+    null,
   )(App),
 );
