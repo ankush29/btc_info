@@ -4,7 +4,6 @@ import {
 } from 'recharts';
 
 export default class BtcChart extends React.Component {
-
   render() {
     const { btcArray } = this.props
     return (
