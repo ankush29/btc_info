@@ -12,7 +12,7 @@ export default class BtcChart extends React.Component {
     const { btcArray } = this.props
     return (
       <div>
-        <h3>BTC CHART</h3>
+        <h3>BTC CHAR</h3>
         {btcArray.length ? <LineChart
           width={1000}
           height={500}
