@@ -4,15 +4,12 @@ import {
 } from 'recharts';
 
 export default class BtcChart extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
+
   render() {
     const { btcArray } = this.props
     return (
       <div>
-        <h3>BTC CHAR</h3>
+        <h3>BTC CHART</h3>
         {btcArray.length ? <LineChart
           width={1000}
           height={500}
