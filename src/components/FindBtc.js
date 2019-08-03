@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import TextField from "@material-ui/core/TextField";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -83,6 +84,9 @@ export default class FindBtc extends React.Component {
     const { btcAmount, error, outputArray } = this.state;
     return (
       <div>
+        <Helmet>
+          <title>BTC TRANSACION | Find Your COIN</title>
+        </Helmet>
         <h3>Find BTC by Value</h3>
         <TextField
           id="standard-search"
