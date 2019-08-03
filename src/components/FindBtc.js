@@ -1,84 +1,86 @@
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
+import React from "react";
+import TextField from "@material-ui/core/TextField";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
 
 const classes = {
   root: {
-    width: '100%',
+    width: "100%"
   },
   paper: {
     // marginTop: theme.spacing(3),
-    width: '100%',
-    overflowX: 'auto',
+    width: "100%",
+    overflowX: "auto"
     // marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: 650,
-  },
+    minWidth: 650
+  }
 };
 
 export default class FindBtc extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      btcAmount: '',
-      error: '',
+      btcAmount: "",
+      error: "",
       outputArray: []
-    }
+    };
   }
 
-  _handleBtcValue = (ev) => {
-
+  _handleBtcValue = ev => {
     this.setState({
       btcAmount: ev.target.value,
-      error: ''
-    })
-  }
+      error: ""
+    });
+  };
 
-  _findBtc = (ev) => {
-    const { btcAmount } = this.state
-    const amountRegex = /^[+-]?\d+(\.\d+)?$/.test(btcAmount)
-    if(amountRegex) {
-      this._getValue(btcAmount)
+  _findBtc = ev => {
+    const { btcAmount } = this.state;
+    const amountRegex = /^[+-]?\d+(\.\d+)?$/.test(btcAmount);
+    if (amountRegex) {
+      this._getValue(btcAmount);
     } else {
       this.setState({
-        error: 'Please Enter Valid Number. eg(12,1.2,0.12)',
+        error: "Please Enter Valid Number. eg(12,1.2,0.12)",
         outputArray: []
-      })
+      });
     }
-  }
+  };
 
-  _getValue = (btcAmount) => {
+  _getValue = btcAmount => {
     const { btcArray } = this.props;
-    let outputArray = []
+    let outputArray = [];
     let newArray = btcArray.slice();
     let count = 0;
     while (count < 3 && newArray.length) {
-      let ouput = newArray.reduce((prev, curr, index) => Math.abs(curr.amount - btcAmount) < Math.abs(prev.amount - btcAmount) ? curr : prev);
-      newArray = newArray.filter((item) => {
-        if(item.id !== ouput.id) {
-          return item
+      let ouput = newArray.reduce((prev, curr, index) =>
+        Math.abs(curr.amount - btcAmount) < Math.abs(prev.amount - btcAmount)
+          ? curr
+          : prev
+      );
+      newArray = newArray.filter(item => {
+        if (item.id !== ouput.id) {
+          return item;
         } else {
-          return false
+          return false;
         }
-      })
-      outputArray.push(ouput)
+      });
+      outputArray.push(ouput);
       count++;
     }
     this.setState({
       outputArray
-    })
-    console.log('outputArray----',outputArray,'btcAmount---',btcAmount);
-  }
+    });
+  };
 
-  render () {
-    const { btcAmount, error, outputArray } = this.state
+  render() {
+    const { btcAmount, error, outputArray } = this.state;
     return (
       <div>
         <h3>Find BTC by Value</h3>
@@ -90,14 +92,17 @@ export default class FindBtc extends React.Component {
           onChange={this._handleBtcValue}
           value={btcAmount}
         />
-        <Button variant="contained" color="primary" onClick={this._findBtc} className="findBtcButton">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this._findBtc}
+          className="findBtcButton"
+        >
           Find BTC
         </Button>
         <p className="error">{error}</p>
         {outputArray.forEach((item, index) => {
-          return(<ul>
-
-          </ul>)
+          return <ul></ul>;
         })}
         <div style={classes.root}>
           <Paper style={classes.paper}>
@@ -122,6 +127,6 @@ export default class FindBtc extends React.Component {
           </Paper>
         </div>
       </div>
-    )
+    );
   }
 }
