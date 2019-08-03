@@ -43,7 +43,7 @@ const BtcChart = (props) => {
           />
         </LineChart>
       ) : (
-        'LOADING CHARTS...'
+        'GETTING BTC VALUE...'
       )}
     </div>
   );

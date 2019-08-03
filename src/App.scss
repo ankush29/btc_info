@@ -10,6 +10,10 @@ $primary-color: #333;
   font-size: large;
 }
 
+.nav {
+  text-align: left;
+}
+
 .NavLink {
   margin: 10px;
   text-decoration: none;
@@ -34,5 +38,18 @@ $primary-color: #333;
 }
 
 .recharts-wrapper {
-  margin : 0 auto;
+  margin: 0 auto;
+}
+
+.connectionStatus {
+  text-align: right;
+  margin-right: 5%;
+}
+
+.connect {
+  color: #4cc417;
+}
+
+.disconnected {
+  color: red;
 }

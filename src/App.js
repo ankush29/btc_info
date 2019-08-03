@@ -24,7 +24,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      connectionStatus: 'connecting...',
+      connectionStatus: 'Connecting...',
       btcArray: [],
     };
   }
@@ -37,7 +37,7 @@ class App extends Component {
 
     websocket.onopen = () => {
       this.setState({
-        connectionStatus: 'connected',
+        connectionStatus: 'Connected',
       });
       this._start();
     };
@@ -65,13 +65,13 @@ class App extends Component {
 
   _restart = () => {
     this.setState({
-      connectionStatus: 'connected',
+      connectionStatus: 'Connected',
     });
   };
 
   _stop = () => {
     this.setState({
-      connectionStatus: 'disconnected',
+      connectionStatus: 'Disconnected',
     });
   };
 
@@ -115,7 +115,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-intro">
-          <nav>
+          <nav className="nav">
             <NavLink
               to="/"
               exact
@@ -134,9 +134,15 @@ class App extends Component {
               FindBtc
             </NavLink>
           </nav>
-          <p>
-            status:
-            {connectionStatus}
+          <p className="connectionStatus">
+            Status:
+            <span
+              className={
+                connectionStatus === 'Connected' ? 'connect' : 'disconnected'
+              }
+            >
+              {` ${connectionStatus}`}
+            </span>
           </p>
           <Switch>
             <Route
