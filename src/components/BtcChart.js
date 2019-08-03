@@ -13,7 +13,7 @@ export default class BtcChart extends React.Component {
     return (
       <div>
         <h3>BTC CHART</h3>
-        <LineChart
+        {btcArray.length ? <LineChart
           width={1000}
           height={500}
           data={btcArray}
@@ -27,7 +27,7 @@ export default class BtcChart extends React.Component {
           <Tooltip />
           <Legend />
           <Line type="monotone" dataKey="amount" stroke="#8884d8" activeDot={{ r: 8 }} />
-      </LineChart>
+      </LineChart> : 'LOADING CHARTS...' }
       </div>
     );
   }
